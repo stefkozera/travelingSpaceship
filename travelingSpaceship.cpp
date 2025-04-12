@@ -18,9 +18,9 @@ void generateCities(int **f_targets)
     for(int i = 0; i < NUM_TARGETS; ++i){
         for(int j = 0; j < 3; ++j){
             f_targets[i][j] = distanceRand(rng);
-            printf("%d ",f_targets[i][j]);
+            //printf("%d ",f_targets[i][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
@@ -40,9 +40,9 @@ void calcDistanceMatrix(int **f_targets, double **f_targetDistance)
 
                 f_targetDistance[i][j] = sqrt(xDist + yDist + zDist);
             }
-            printf("%f ", f_targetDistance[i][j]);
+            //printf("%f ", f_targetDistance[i][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
@@ -68,9 +68,9 @@ void generateInitPopulation(int **population)
 
     for(int i = 0; i < POPULATION; ++i){
         for (int j = 0; j < NUM_TARGETS; ++j){
-            printf("%d ", population[i][j]);
+            //printf("%d ", population[i][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
@@ -119,13 +119,21 @@ int main()
 
     generateInitPopulation(population);
 
-    double *fitnessPop = new double[POPULATION];
+    std::vector<std::pair<double, int> > fitnessPop;
 
     for (int i = 0; i < POPULATION; ++i){
-        fitnessPop[i] = fitnessCalc(population[i], targetDistance);
-        printf("%f\n", fitnessPop[i]);
+        double fitness = fitnessCalc(population[i], targetDistance);
+        fitnessPop.push_back(std::make_pair(fitness, i));
+        printf("%f %d\n", fitnessPop[i].first, fitnessPop[i].second);
     }
 
+    printf("\n");
+
+    int middleElement = POPULATION / 2;
+    std::nth_element(fitnessPop.begin(), fitnessPop.begin() + middleElement, fitnessPop.end());
+    for (int i = 0; i < POPULATION; ++i){
+        printf("%f %d\n", fitnessPop[i].first, fitnessPop[i].second);
+    }
 
 
  
